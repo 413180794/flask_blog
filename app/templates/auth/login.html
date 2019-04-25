@@ -1,0 +1,44 @@
+{% extends "__base__.html" %}
+{% block title %}登录{% endblock %}
+
+
+{% block page_content %}
+
+    <div class="uk-vertical-align uk-text-center uk-height-1-1">
+        <div class="uk-vertical-align-middle" style="width:320px">
+            <p><a href="/" class="uk-icon-button"><i class="uk-icon-html5"></i><a href="/">Awesome Python Webapp</a>
+            </a>
+            </p>
+            {#            {{ wtf.quick_form(form) }}#}
+            {#这个快速表单怎么实现css样式的？#}
+            <form method="POST" class="uk-panel uk-panel-box uk-form">
+                <div class="uk-form-row">
+                    {{ form.hidden_tag() }}
+                </div>
+                <div class="uk-form-row">
+                    <div class="uk-form-icon uk-width-1-1">
+                        <i class="uk-icon-envelope-o"></i>
+                        {{ form.email(type='text',placeholder='电子邮件',maxlength='50',class='uk-width-1-1 uk-form-large') }}
+                    </div>
+                </div>
+                <div class="uk-form-row">
+                    <div class="uk-form-icon uk-width-1-1">
+                        <i class="uk-icon-lock"></i>
+                        {{ form.password(type='password',placeholder='口令',maxlength="50",class="uk-width-1-1 uk-form-large") }}
+                    </div>
+                </div>
+                <div class="uk-form-row">
+                    <div class="uk-form-icon uk-width-1-1">
+                        {{ form.remember_me() }}记住我
+                    </div>
+                </div>
+                <div class="uk-form-row">
+                    <div class="uk-form-icon uk-width-1-1">
+                    {{ form.submit(class="uk-width-1-1 uk-button uk-button-primary uk-button-large") }}
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+{% endblock %}
