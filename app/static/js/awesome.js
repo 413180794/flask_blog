@@ -285,11 +285,9 @@ $(function () {
             }
             return this.each(function () {
                 var $form = $(this);
-                $form.+showFormError();
+                $form.showFormError();
                 $form.showFormLoading(true);
                 _httpJSON('POST', url, data, function (err, r) {
-                    console.log(err)
-                    console.log(r)
                     if (err) {
                         $form.showFormError(err);
                         $form.showFormLoading(false);
@@ -317,13 +315,11 @@ function _httpJSON(method, url, data, callback) {
         opt.contentType = 'application/json';
     }
     $.ajax(opt).done(function (r) {
-
         if (r && r.error) {
             return callback(r);
         }
         return callback(null, r);
     }).fail(function (jqXHR, textStatus) {
-
         return callback({'error': 'http_bad_response', 'data': '' + jqXHR.status, 'message': '网络好像出问题了 (HTTP ' + jqXHR.status + ')'});
     });
 }

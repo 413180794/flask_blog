@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>jQueryStudy</title>
+    <style>
+     .int{ height: 30px; text-align: left; width: 600px; }
+     label{ width: 200px; margin-left: 20px; }
+     .high{ color: red; }
+     .msg{ font-size: 13px; }
+     .onError{ color: red; }
+     .onSuccess{ color: green; }
+    </style>
+    <script>
+        //为表单的必填文本框添加提示信息（选择form中的所有后代input元素）
+    $("z :input.required").each(function () {
+        //通过jquery api：$("HTML字符串") 创建jquery对象
+        var $required = $("<strong class='high'>*</strong>");
+        //添加到this对象的父级对象下
+        $(this).parent().append($required);
+    });
+    </script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+    <form id="z" method="post" action="#">
+        <div class="int">
+            <label for="name">姓名：</label>
+            <input type="text" id="name" class="required" />
+        </div>
+        <div class="int">
+            <label for="email">邮箱：</label>
+            <input type="text" id="email" class="required" />
+        </div>
+        <div class="int">
+            <label for="address">住址：</label>
+            <input type="text" id="address" />
+        </div>
+        <div class="int">
+            <input type="submit" value="提交" id="send" style="margin-left: 70px;" />
+            <input type="reset" value="重置" id="res" />
+        </div>
+    </form>
+</body>
+</html>

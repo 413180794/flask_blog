@@ -5,4 +5,4 @@ from . import main
 
 @main.route("/")
 def index():
-    return render_template("auth/login.html")
+    return render_template("index.html")

@@ -1,0 +1,112 @@
+{% extends "__base__.html" %}
+
+{% block title %}注册{% endblock %}
+
+{% block beforehead %}
+    <script>
+
+        function validateRegisterForm() {
+            // 验证姓名
+            let nameVal = $("#username").val();
+            let regName = /[~#^$@%&!*()<>:;'"{}【】 ]/;
+            let $username = document.querySelector("#username");
+            if (nameVal == "" || nameVal.length < 6 || regName.test(nameVal)) {
+                $username.setCustomValidity("姓名非空，长度6位以上，不包含特殊字符！");
+                $username.reportValidity();
+                return false;
+            }
+            // 验证邮箱
+            let emailVal = $("#email").val();
+            let regEmail = /.+@.+\.[a-zA-Z]{2,4}$/;
+            let $email = document.querySelector("#email");
+            if (emailVal == "" || emailVal != "" && !regEmail.test(emailVal)) {
+                $email.setCustomValidity("请输入正确的E-Mail！")
+                $email.reportValidity();
+                return false;
+            }
+            // 验证密码相同
+            let passwordVal1 = $("#password1").val();
+            let passwordVal2 = $("#password2").val();
+            let $password = document.querySelector("#password1");
+            if (passwordVal1 != passwordVal2) {
+                $password.setCustomValidity("两次密码不同");
+                $password.reportValidity();
+                return false;
+            }
+            return true;
+        }
+
+        function register() {
+            console.log($("#registerForm").serialize());
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/auth/api/register",
+                data: $("#registerForm").serialize(),
+                success: function (result) {
+                    // 如果成功了，
+                    console.log(result);
+                    if (result.error) {
+                        $("#" + result.id)[0].setCustomValidity(result.error)
+                    } else if (result.success) {
+                        location.assign("/auth/login.html")
+                    }
+                },
+                error: function (errorMsg) {
+                    console.log(errorMsg)
+                }
+            })
+        }
+    </script>
+{% endblock %}
+{% block page_content %}
+    <div class="uk-width-2-3">
+        <h1>欢迎注册！</h1>
+        <form method="POST" id="registerForm" class="uk-panel uk-panel-box uk-form uk-form-stacked"
+              onsubmit="return validateRegisterForm();">
+            {#        <form method="POST" id="registerForm" class="uk-panel uk-panel-box uk-form uk-form-stacked" >#}
+            <div class="uk-form-row">
+                {{ form.hidden_tag() }}
+            </div>
+            <div class="uk-form-row">
+                <label class="uk-form-label">名字</label>
+                <div class="uk-form-controls">
+                    {{ form.username(type="text",id="username",maxlength="50",placeholder="名字",class="uk-width-1-1",oninput="setCustomValidity('')") }}
+                </div>
+                 {% for msg in form.username.errors %}
+                    <p style="color: red">{{ msg }}</p>
+                {% endfor %}
+            </div>
+            <div class="uk-form-row">
+                <label class="uk-form-label">电子邮件</label>
+                <div class="uk-form-controls">
+                    {{ form.email(type="email",id="email",maxlenght="50",placeholder="your-name@example.com",class="uk-width-1-1",oninput="setCustomValidity('')") }}
+                </div>
+                {% for msg in form.email.errors %}
+                    <p style="color: red">{{ msg }}</p>
+                {% endfor %}
+            </div>
+            <div class="uk-form-row">
+                <label class="uk-form-label">输入密码</label>
+                <div class="uk-form-controls">
+                    {{ form.password(type="password",id="password1",maxlength="50",placeholder="输入密码",class="uk-width-1-1",oninput="setCustomValidity('')") }}
+                </div>
+                {% for msg in form.password.errors %}
+                    <p style="color: red">{{ msg }}</p>
+                {% endfor %}
+            </div>
+            <div class="uk-form-row">
+                <label class="uk-form-label">重复口令</label>
+                <div class="uk-form-controls">
+                    {{ form.password2(type="password",id="password2",maxlength="50",placeholder="重复密码",class="uk-width-1-1",oninput="setCustomValidity('')") }}
+                </div>
+                {% for msg in form.password.errors %}
+                    <p style="color: red">{{ msg }}</p>
+                {% endfor %}
+            </div>
+            <div class="uk-form-row">
+                {{ form.submit(class="uk-button ub-button-primary") }}
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -7,6 +7,7 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 
 from config import config
+from flask_wtf.csrf import CSRFProtect
 
 bootstrap = Bootstrap()
 mail = Mail()
@@ -16,9 +17,11 @@ login_manager = LoginManager()
 login_manager.session_protection = "strong"
 login_manager.login_view = "auth.login"
 
+
 def create_app(config_name):
     app = Flask(__name__)
 
+    CSRFProtect(app)
     app.config.from_object(config[config_name])
     bootstrap.init_app(app)
     mail.init_app(app)
@@ -31,5 +34,5 @@ def create_app(config_name):
     from .api import api as api_blueprint
     app.register_blueprint(main_blueprint)
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
-    app.register_blueprint(api_blueprint,url_prefix="/api")
+    app.register_blueprint(api_blueprint, url_prefix="/api")
     return app

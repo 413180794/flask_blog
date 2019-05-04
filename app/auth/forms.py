@@ -12,18 +12,20 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Log In")
 
 
-class RegistratioinForm(FlaskForm):
-    email = StringField("Email", validators=[DataRequired(), Length(1, 64), Email()])
-    username = StringField("Username", validators=[DataRequired(), Length(1, 64), Regexp("[A-Za-z][A-Za-z0-9_.]*$", 0,
-                                                                                         "Usernames must have only letters, numbers,dots or underscores")])
+class RegistrationForm(FlaskForm):
+    email = StringField("Email", validators=[Length(1, 64), DataRequired(), Email()])
+    username = StringField("Username",
+                           validators=[DataRequired(), Length(1, 64)])
     password = PasswordField('Password', validators=[DataRequired(), EqualTo("password2", message="密码必须要相同")])
     password2 = PasswordField("Confirm password", validators=[DataRequired()])
-    submit = SubmitField("Register")
+    submit = SubmitField(u"注册")
 
+    # 注意这里对邮箱校验，对密码校验，对用户名校验是为了防止用户直接通过request登录
+    # 前端需要在校验一次
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
-            raise ValidationError("Email already registered.")
+            raise ValidationError("该邮箱已经被注册。")
 
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
-            raise ValidationError("Username already in user.")
+            raise ValidationError("用户名已经存在。")

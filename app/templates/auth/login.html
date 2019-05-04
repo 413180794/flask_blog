@@ -1,6 +1,10 @@
 {% extends "__base__.html" %}
 {% block title %}登录{% endblock %}
 
+{% block beforehead %}
+
+{% endblock %}
+
 
 {% block page_content %}
 
@@ -11,30 +15,30 @@
             </p>
             {#            {{ wtf.quick_form(form) }}#}
             {#这个快速表单怎么实现css样式的？#}
-            <form method="POST" class="uk-panel uk-panel-box uk-form">
+            <form method="POST" id="loginForm" class="uk-panel uk-panel-box uk-form uk-form-stacked">
                 <div class="uk-form-row">
                     {{ form.hidden_tag() }}
                 </div>
                 <div class="uk-form-row">
                     <div class="uk-form-icon uk-width-1-1">
                         <i class="uk-icon-envelope-o"></i>
-                        {{ form.email(type='text',placeholder='电子邮件',maxlength='50',class='uk-width-1-1 uk-form-large') }}
+                        {{ form.email(type='email',id="email",placeholder='电子邮件',maxlength='50',class='uk-width-1-1 uk-form-large',oninput="setCustomValidity("")") }}
                     </div>
                 </div>
                 <div class="uk-form-row">
                     <div class="uk-form-icon uk-width-1-1">
                         <i class="uk-icon-lock"></i>
-                        {{ form.password(type='password',placeholder='口令',maxlength="50",class="uk-width-1-1 uk-form-large") }}
+                        {{ form.password(type='password',id="password",placeholder='口令',maxlength="50",class="uk-width-1-1 uk-form-large",oninput="setCustomValidity('')") }}
                     </div>
                 </div>
                 <div class="uk-form-row">
                     <div class="uk-form-icon uk-width-1-1">
-                        {{ form.remember_me() }}记住我
+                        {{ form.remember_me }}记住我
                     </div>
                 </div>
                 <div class="uk-form-row">
                     <div class="uk-form-icon uk-width-1-1">
-                    {{ form.submit(class="uk-width-1-1 uk-button uk-button-primary uk-button-large") }}
+                        {{ form.submit(class="uk-width-1-1 uk-button uk-button-primary uk-button-large") }}
                     </div>
                 </div>
 
